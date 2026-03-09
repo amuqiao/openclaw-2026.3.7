@@ -328,16 +328,34 @@ Troubleshooting: https://docs.openclaw.ai/troubleshooting
 - **监听地址/端口**：`127.0.0.1:18789`（仅本地可访问）
 - **潜在问题**：Node 路径依赖版本管理器（NVM），升级后可能失效，建议执行 `openclaw doctor --repair` 修复
 
-## 5. Dashboard 访问
+## 5. 日志查看
 
-### 5.1 访问命令（不自动打开浏览器）
+### 5.1 查看 OpenClaw 网关的实时日志（macOS LaunchAgent 日志）
+
+```bash
+log show --predicate 'process == "node" AND subsystem == "ai.openclaw.gateway"' --info --debug --latest 10m
+```
+
+### 5.2 查看进程 stderr/stdout 日志（如果有文件输出）
+
+```bash
+# 核心日志文件
+cat ~/.openclaw/logs/gateway.log
+
+# 错误日志
+cat ~/.openclaw/logs/error.log
+```
+
+## 6. Dashboard 访问
+
+### 6.1 访问命令（不自动打开浏览器）
 
 ```bash
 pnpm clawdbot dashboard
 pnpm openclaw dashboard --no-open
 ```
 
-### 5.2 执行结果与访问地址
+### 6.2 执行结果与访问地址
 
 ```bash
 > node scripts/run-node.mjs dashboard --no-open
@@ -349,7 +367,7 @@ Copied to clipboard.
 Browser launch disabled (--no-open). Use the URL above.
 ```
 
-## 6. 总结
+## 7. 总结
 
 1. **网关服务状态**：已成功安装并运行在本地 `127.0.0.1:18789` 端口，仅支持本地访问
 2. **已配置组件**：飞书（websocket 模式）和 MiniMax-M2.5 模型，核心功能可正常使用
@@ -357,3 +375,4 @@ Browser launch disabled (--no-open). Use the URL above.
 4. **Dashboard 访问**：需使用带 token 的专属链接
 5. **配置扩展**：已添加 qwen-plus 模型配置，可根据需要切换默认模型
 6. **配置验证**：修改配置后建议使用 `jq` 工具检查 JSON 语法合法性，确保服务启动正常
+7. **日志查看**：可通过 macOS LaunchAgent 日志或文件日志查看网关运行状态和错误信息
