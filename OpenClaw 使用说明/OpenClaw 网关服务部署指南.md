@@ -346,6 +346,13 @@ cat ~/.openclaw/logs/gateway.log
 cat ~/.openclaw/logs/error.log
 ```
 
+### 5.3 实时查看日志（使用 OpenClaw 命令）
+
+```bash
+# 实时查看 OpenClaw 网关日志
+pnpm openclaw logs --follow
+```
+
 ## 6. Dashboard 访问
 
 ### 6.1 访问命令（不自动打开浏览器）

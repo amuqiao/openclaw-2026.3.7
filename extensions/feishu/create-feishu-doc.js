@@ -40,20 +40,16 @@ async function createDocument() {
       process.exit(1);
     }
 
-    // Get the root block ID first
-    console.log("Fetching document structure...");
-    const rootRes = await client.docx.documentBlockChildren.get({
-      path: { document_id: docToken, block_id: docToken },
+    // Get the document metadata to find the root block
+    console.log("Fetching document metadata...");
+    const docMetaRes = await client.docx.document.get({
+      path: { document_id: docToken },
     });
 
-    console.log("Root response:", JSON.stringify(rootRes, null, 2));
+    console.log("Document metadata:", JSON.stringify(docMetaRes, null, 2));
 
-    let rootBlockId = docToken;
-    if (rootRes.code === 0 && rootRes.data?.items?.length > 0) {
-      // Use the first block as parent
-      rootBlockId = rootRes.data.items[0].block_id;
-      console.log("Using root block:", rootBlockId);
-    }
+    let rootBlockId = docMetaRes.data?.document?.root_block_id || docToken;
+    console.log("Using root block:", rootBlockId);
 
     // Prepare markdown content
     const markdownContent = `# 飞书云文档介绍
